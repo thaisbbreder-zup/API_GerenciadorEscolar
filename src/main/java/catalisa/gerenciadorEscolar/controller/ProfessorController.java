@@ -1,6 +1,6 @@
 package catalisa.gerenciadorEscolar.controller;
 
-import catalisa.gerenciadorEscolar.dto.ProfessorDTO;
+import catalisa.gerenciadorEscolar.dto.response.ProfessorDTO;
 import catalisa.gerenciadorEscolar.model.ProfessorModel;
 import catalisa.gerenciadorEscolar.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +18,13 @@ public class ProfessorController {
     ProfessorService professorService;
 
     @PostMapping
-    public ProfessorModel cadastrarProfessor(@RequestBody ProfessorModel professor) {
+    public ProfessorModel cadastrarProfessor(@RequestBody ProfessorModel professor) { //professorrequest
         return professorService.cadastrarProfessor(professor);
     }
 
     @GetMapping
     public List<ProfessorDTO> listarProfessores() {
+
         List<ProfessorModel> professores = professorService.listarProfessores();
         List<ProfessorDTO> professorDTO = new ArrayList<>();
 

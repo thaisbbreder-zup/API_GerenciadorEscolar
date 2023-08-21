@@ -1,9 +1,9 @@
 package catalisa.gerenciadorEscolar.controller;
 
-import catalisa.gerenciadorEscolar.dto.MatriculaDTO;
+import catalisa.gerenciadorEscolar.dto.response.MatriculaDTO;
+import catalisa.gerenciadorEscolar.model.AlunoModel;
+import catalisa.gerenciadorEscolar.model.CursoModel;
 import catalisa.gerenciadorEscolar.model.MatriculaModel;
-import catalisa.gerenciadorEscolar.model.MatriculaModel;
-import catalisa.gerenciadorEscolar.service.MatriculaService;
 import catalisa.gerenciadorEscolar.service.MatriculaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +19,23 @@ public class MatriculaController {
     MatriculaService matriculaService;
 
     @PostMapping
-    public MatriculaModel cadastrarMatricula(@RequestBody MatriculaModel matricula) {
-        return matriculaService.cadastrarMatricula(matricula);
+    public ResponseEntity<MatriculaModel> cadastrarMatricula(@RequestBody MatriculaModel matricula) {
+        AlunoModel aluno = matricula.getAluno();
+        CursoModel curso = matricula.getCurso();
+
+        if (aluno != null && curso != null) {
+            matricula.setDataMatricula("2023-08-17");
+            matricula.setAluno(aluno);
+            matricula.setCurso(curso);
+
+            MatriculaModel novaMatricula = matriculaService.cadastrarMatricula(matricula);
+            return ResponseEntity.ok(novaMatricula);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-//atualizar curso
+    //atualizar curso
     @PatchMapping(path = "/matricula/{id}")
     public ResponseEntity<MatriculaModel> atualizarCurso(@PathVariable Long id, @RequestBody MatriculaModel cursoUpdate) {
         MatriculaModel atualizarCurso = matriculaService.atualizarCurso(id, cursoUpdate);
@@ -39,16 +51,25 @@ public class MatriculaController {
             MatriculaDTO dto = new MatriculaDTO();
 
             dto.setDataMatricula(matricula.getDataMatricula());
-            dto.setAluno(matricula.getAluno());
-            dto.setCurso(matricula.getCurso());
+
+            if (matricula.getAluno() != null) {
+                dto.setAluno(matricula.getAluno().getNome());
+            }
+
+            if (matricula.getCurso() != null) {
+                dto.setCurso(matricula.getCurso().getNomeCurso());
+            }
+
             matriculasDTO.add(dto);
         }
+
         return matriculasDTO;
     }
 
+
     @DeleteMapping(path = "/matricula/{id}")
     public ResponseEntity<Void> deletarMatricula(@PathVariable Long id) {
-           matriculaService.deletarMatricula(id);
-            return ResponseEntity.noContent().build();
+        matriculaService.deletarMatricula(id);
+        return ResponseEntity.noContent().build();
     }
 }

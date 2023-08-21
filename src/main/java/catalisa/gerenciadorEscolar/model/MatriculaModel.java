@@ -19,18 +19,13 @@ public class MatriculaModel {
     private Long id;
     @Column(length = 10, nullable = false)
     private String dataMatricula;
-    @Column(length = 50, nullable = false)
-    private String aluno;
-    @Column(length = 50, nullable = false)
-    private String curso;
-
-/*  @ManyToOne
-    @JoinColumn(name = "aluno_id")
-    private AlunoModel alunos;
 
     @ManyToOne
     @JoinColumn(name = "curso_id")
-    private CursoModel cursos;
-    */
+    private CursoModel curso;
+
+    @ManyToOne
+    @JoinColumn(name = "aluno_id")
+    private AlunoModel aluno;
 
 }

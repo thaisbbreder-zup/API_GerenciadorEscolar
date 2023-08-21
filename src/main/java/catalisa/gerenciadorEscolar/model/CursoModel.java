@@ -23,6 +23,13 @@ public class CursoModel {
     @Column(length = 6, nullable = false)
     private double cargaHoraria;
 
-  /*  @OneToMany(mappedBy = "curso")
-    private List<MatriculaModel> matriculas;*/
+    // um curso pode ter várias matrículas
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
+    private List<MatriculaModel> matriculas;
+
+/*    // um curso pode ter um professor
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
+    private List<ProfessorModel> professor;*/
 }
+
+

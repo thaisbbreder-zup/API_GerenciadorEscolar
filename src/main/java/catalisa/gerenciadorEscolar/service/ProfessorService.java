@@ -14,6 +14,7 @@ public class ProfessorService {
 
     //cadastrar prof
     public ProfessorModel cadastrarProfessor(ProfessorModel professor) {
+
         return professorRepository.save(professor);
     }
     public List<ProfessorModel> listarProfessores() {

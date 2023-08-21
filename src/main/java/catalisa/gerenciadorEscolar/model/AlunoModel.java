@@ -26,8 +26,7 @@ public class AlunoModel {
     @Column(length = 50, nullable = false)
     private String email;
 
+    // um aluno pode ter várias matrículas
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL)
     private List<MatriculaModel> matriculas;
-
-
 }

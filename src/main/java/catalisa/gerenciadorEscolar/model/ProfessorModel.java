@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "TB_PROFESSOR")
@@ -19,14 +20,15 @@ public class ProfessorModel {
     private Long id;
     @Column(length = 50, nullable = false)
     private String nome;
+    @Column(length = 20, nullable = false)
+    private String curso;
     @Column(length = 2, nullable = false)
     private int idade;
-    @Column(length = 50, nullable = false)
-    private String curso;
     @Column(length = 10, nullable = false)
     private double salario;
 
-    @ManyToOne
+    //um professor pode estar associado vários cursos
+  /*  @ManyToOne
     @JoinColumn(name = "curso_id")
-    private CursoModel cursos;
+    private CursoModel curso;*/
 }

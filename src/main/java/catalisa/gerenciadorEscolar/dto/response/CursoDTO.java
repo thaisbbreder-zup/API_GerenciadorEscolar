@@ -1,4 +1,4 @@
-package catalisa.gerenciadorEscolar.dto;
+package catalisa.gerenciadorEscolar.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MatriculaDTO {
-    private String dataMatricula;
-    private String aluno;
-    private String curso;
+public class CursoDTO {
+    private String nomeCurso;
+    private double cargaHoraria;
 }

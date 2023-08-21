@@ -1,9 +1,7 @@
 package catalisa.gerenciadorEscolar.controller;
 
-import catalisa.gerenciadorEscolar.dto.AlunoDTO;
-import catalisa.gerenciadorEscolar.model.CursoModel;
+import catalisa.gerenciadorEscolar.dto.response.AlunoDTO;
 import catalisa.gerenciadorEscolar.model.AlunoModel;
-import catalisa.gerenciadorEscolar.model.MatriculaModel;
 import catalisa.gerenciadorEscolar.repository.MatriculaRepository;
 import catalisa.gerenciadorEscolar.service.AlunoService;
 import catalisa.gerenciadorEscolar.service.CursoService;
@@ -27,7 +25,6 @@ public class AlunoController {
     @Autowired
     MatriculaRepository matriculaRepository;
 
-    //cadastrar alunos
     @PostMapping
     public AlunoModel cadastrarAluno(@RequestBody AlunoModel aluno) { //A anotação @RequestBody no Spring converte os dados enviados no corpo de uma solicitação HTTP (por exemplo, em uma requisição POST ou PUT) no formato apropriado, como JSON
         return alunoService.cadastrarAluno(aluno);
