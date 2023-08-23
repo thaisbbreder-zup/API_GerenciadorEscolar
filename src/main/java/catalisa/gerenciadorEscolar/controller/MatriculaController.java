@@ -1,6 +1,6 @@
 package catalisa.gerenciadorEscolar.controller;
 
-import catalisa.gerenciadorEscolar.dto.response.MatriculaDTO;
+import catalisa.gerenciadorEscolar.dto.MatriculaDTO;
 import catalisa.gerenciadorEscolar.model.AlunoModel;
 import catalisa.gerenciadorEscolar.model.CursoModel;
 import catalisa.gerenciadorEscolar.model.MatriculaModel;

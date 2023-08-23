@@ -1,6 +1,6 @@
 package catalisa.gerenciadorEscolar.controller;
 
-import catalisa.gerenciadorEscolar.dto.response.AlunoDTO;
+import catalisa.gerenciadorEscolar.dto.AlunoDTO;
 import catalisa.gerenciadorEscolar.model.AlunoModel;
 import catalisa.gerenciadorEscolar.repository.MatriculaRepository;
 import catalisa.gerenciadorEscolar.service.AlunoService;

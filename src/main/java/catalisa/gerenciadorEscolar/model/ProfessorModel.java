@@ -28,7 +28,7 @@ public class ProfessorModel {
     private double salario;
 
     //um professor pode estar associado vários cursos
-  /*  @ManyToOne
+ /*@ManyToOne
     @JoinColumn(name = "curso_id")
     private CursoModel curso;*/
 }

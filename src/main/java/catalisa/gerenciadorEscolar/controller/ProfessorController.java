@@ -1,6 +1,6 @@
 package catalisa.gerenciadorEscolar.controller;
 
-import catalisa.gerenciadorEscolar.dto.response.ProfessorDTO;
+import catalisa.gerenciadorEscolar.dto.ProfessorDTO;
 import catalisa.gerenciadorEscolar.model.ProfessorModel;
 import catalisa.gerenciadorEscolar.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
