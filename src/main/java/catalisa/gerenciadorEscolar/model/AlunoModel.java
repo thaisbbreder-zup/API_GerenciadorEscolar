@@ -18,7 +18,6 @@ public class AlunoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(length = 50, nullable = false)
     private String nome;
     @Column(length = 2, nullable = false)

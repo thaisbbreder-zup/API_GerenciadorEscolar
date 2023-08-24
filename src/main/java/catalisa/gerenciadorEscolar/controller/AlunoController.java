@@ -6,8 +6,11 @@ import catalisa.gerenciadorEscolar.repository.MatriculaRepository;
 import catalisa.gerenciadorEscolar.service.AlunoService;
 import catalisa.gerenciadorEscolar.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,40 +24,45 @@ public class AlunoController {
     AlunoService alunoService;
 
     @Autowired
-    CursoService  cursoService;
+    CursoService cursoService;
     @Autowired
     MatriculaRepository matriculaRepository;
 
     @PostMapping
-    public AlunoModel cadastrarAluno(@RequestBody AlunoModel aluno) { //A anotação @RequestBody no Spring converte os dados enviados no corpo de uma solicitação HTTP (por exemplo, em uma requisição POST ou PUT) no formato apropriado, como JSON
-        return alunoService.cadastrarAluno(aluno);
+    public ResponseEntity<AlunoDTO> cadastrarAluno(@RequestBody AlunoModel alunoModel) {
+        AlunoModel novoAluno = alunoService.cadastrarAluno(alunoModel);
+
+        AlunoDTO alunoDTO = new AlunoDTO();
+        alunoDTO.setNome(novoAluno.getNome());
+        alunoDTO.setEmail(novoAluno.getEmail());
+
+        return new ResponseEntity<>(alunoDTO, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<AlunoDTO> listarAlunos(){
+    public ResponseEntity<List<AlunoDTO>> listarAlunos() {
         List<AlunoModel> alunos = alunoService.listarAlunos();
-        List<AlunoDTO> alunosDTO = new ArrayList<>();
+        List<AlunoDTO> alunosDTOS = new ArrayList<>();
 
-        for (AlunoModel aluno : alunos){
+        for (AlunoModel aluno : alunos) {
             AlunoDTO dto = new AlunoDTO();
-
             dto.setNome(aluno.getNome());
             dto.setEmail(aluno.getEmail());
-            alunosDTO.add(dto);
+            alunosDTOS.add(dto);
         }
-        return alunosDTO;
+        return ResponseEntity.ok(alunosDTOS);
     }
 
-    //busca aluno por id
-    @GetMapping(path = "/aluno/{id}")
-    public Optional<AlunoModel> buscarAlunoPorID(@PathVariable Long id) {
-        return alunoService.buscarAlunoPorId(id);
+    @GetMapping(path = "{id}")
+    public ResponseEntity<AlunoModel> buscarAlunoPorID(@PathVariable Long id) {
+        Optional<AlunoModel> aluno = alunoService.buscarAlunoPorId(id);
+
+        return aluno.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping(path = "/aluno/{id}")
-    public ResponseEntity<Void> deletarAluno(@PathVariable Long id) {
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deletarAlunoPorID(@PathVariable Long id) {
         alunoService.deletarAluno(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body("Aluno(a) excluído(a) com sucesso!");
     }
-
 }

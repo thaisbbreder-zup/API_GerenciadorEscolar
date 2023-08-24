@@ -18,7 +18,6 @@ public class AlunoService {
         return alunoRepository.save(aluno);
     }
 
-    //pega lista de alunos do banco
     public List<AlunoModel> listarAlunos() {
         return alunoRepository.findAll();
     }
