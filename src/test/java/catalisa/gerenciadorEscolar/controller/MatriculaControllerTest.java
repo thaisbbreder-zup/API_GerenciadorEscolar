@@ -13,7 +13,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -51,4 +58,52 @@ public class MatriculaControllerTest {
                 .andExpect(jsonPath("$.aluno.nome").value("Aluno1"))
                 .andExpect(jsonPath("$.curso.nomeCurso").value("Curso1"));
     }
+
+    @Test
+    @DisplayName("Listar todas as matrículas")
+    public void testListarMatriculas() throws Exception {
+        MatriculaModel matriculaModel1 = new MatriculaModel();
+        matriculaModel1.setAluno(new AlunoModel());
+        matriculaModel1.getAluno().setNome("Aluno1");
+        matriculaModel1.setCurso(new CursoModel());
+        matriculaModel1.getCurso().setNomeCurso("Curso1");
+        matriculaModel1.setDataMatricula("2023-08-17");
+
+        MatriculaModel matriculaModel2 = new MatriculaModel();
+        matriculaModel2.setAluno(new AlunoModel());
+        matriculaModel2.getAluno().setNome("Aluno2");
+        matriculaModel2.setCurso(new CursoModel());
+        matriculaModel2.getCurso().setNomeCurso("Curso2");
+        matriculaModel2.setDataMatricula("2023-08-18");
+
+        List<MatriculaModel> matriculas = new ArrayList<>();
+        matriculas.add(matriculaModel1);
+        matriculas.add(matriculaModel2);
+
+        Mockito.when(matriculaService.listarMatriculas()).thenReturn(matriculas);
+
+        mockMvc.perform(get("/matricula"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].aluno").value("Aluno1"))
+                .andExpect(jsonPath("$[0].curso").value("Curso1"))
+                .andExpect(jsonPath("$[0].dataMatricula").value("2023-08-17"))
+                .andExpect(jsonPath("$[1].aluno").value("Aluno2"))
+                .andExpect(jsonPath("$[1].curso").value("Curso2"))
+                .andExpect(jsonPath("$[1].dataMatricula").value("2023-08-18"));
+    }
+
+    //atualizar curso
+
+    //deletar matricula por id
+   /* @Test
+    @DisplayName("Deletar matricula por id")
+    public void testDeletarMatriculaPorID() throws Exception {
+        Long alunoId = 1L;
+
+        mockMvc.perform(delete("/matricula/{id}", alunoId))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Matricula excluída com sucesso!"));
+
+        verify(matriculaService, times(1)).deletarMatricula(alunoId);
+    }*/
 }

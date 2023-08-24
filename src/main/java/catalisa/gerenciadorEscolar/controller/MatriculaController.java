@@ -68,8 +68,8 @@ public class MatriculaController {
 
 
     @DeleteMapping(path = "/matricula/{id}")
-    public ResponseEntity<Void> deletarMatricula(@PathVariable Long id) {
+    public ResponseEntity<?> deletarMatricula(@PathVariable Long id) {
         matriculaService.deletarMatricula(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body("Matrícula excluída com sucesso!");
     }
 }

@@ -4,11 +4,13 @@ import catalisa.gerenciadorEscolar.dto.ProfessorDTO;
 import catalisa.gerenciadorEscolar.model.ProfessorModel;
 import catalisa.gerenciadorEscolar.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/professor")
@@ -18,29 +20,40 @@ public class ProfessorController {
     ProfessorService professorService;
 
     @PostMapping
-    public ProfessorModel cadastrarProfessor(@RequestBody ProfessorModel professor) { //professorrequest
-        return professorService.cadastrarProfessor(professor);
+    public ResponseEntity<ProfessorDTO> cadastrarProfessor(@RequestBody ProfessorModel professorModel) {
+        ProfessorModel novoProfessor = professorService.cadastrarProfessor(professorModel);
+
+        ProfessorDTO professorDTO = new ProfessorDTO();
+        professorDTO.setNome(novoProfessor.getNome());
+        professorDTO.setCurso(novoProfessor.getCurso());
+
+        return new ResponseEntity<>(professorDTO, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<ProfessorDTO> listarProfessores() {
-
+    public ResponseEntity<List<ProfessorDTO>> listarProfessores() {
         List<ProfessorModel> professores = professorService.listarProfessores();
-        List<ProfessorDTO> professorDTO = new ArrayList<>();
+        List<ProfessorDTO> professoresDTO = new ArrayList<>();
 
         for (ProfessorModel professor : professores) {
             ProfessorDTO dto = new ProfessorDTO();
-
             dto.setNome(professor.getNome());
             dto.setCurso(professor.getCurso());
-            professorDTO.add(dto);
+            professoresDTO.add(dto);
         }
-        return professorDTO;
+        return ResponseEntity.ok(professoresDTO);
     }
 
-    @DeleteMapping(path = "/professor/{id}")
-    public ResponseEntity<Void> deletarProfessor(@PathVariable Long id) {
+    @GetMapping(path = "{id}")
+    public ResponseEntity<ProfessorModel> buscarProfessorPorId(@PathVariable Long id) {
+        Optional<ProfessorModel> professor = professorService.buscarProfessorPorId(id);
+
+        return professor.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deletarProfessorPorID(@PathVariable Long id) {
         professorService.deletarProfessor(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body("Professor(a) excluído(a) com sucesso!");
     }
 }

@@ -1,11 +1,13 @@
 package catalisa.gerenciadorEscolar.service;
 
+import catalisa.gerenciadorEscolar.model.AlunoModel;
 import catalisa.gerenciadorEscolar.model.ProfessorModel;
 import catalisa.gerenciadorEscolar.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProfessorService {
@@ -19,6 +21,10 @@ public class ProfessorService {
     }
     public List<ProfessorModel> listarProfessores() {
         return professorRepository.findAll();
+    }
+
+    public Optional<ProfessorModel> buscarProfessorPorId(Long id) {
+        return professorRepository.findById(id);
     }
 
     //deletar

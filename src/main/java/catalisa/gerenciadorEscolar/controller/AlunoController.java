@@ -42,19 +42,19 @@ public class AlunoController {
     @GetMapping
     public ResponseEntity<List<AlunoDTO>> listarAlunos() {
         List<AlunoModel> alunos = alunoService.listarAlunos();
-        List<AlunoDTO> alunosDTOS = new ArrayList<>();
+        List<AlunoDTO> alunosDTO = new ArrayList<>();
 
         for (AlunoModel aluno : alunos) {
             AlunoDTO dto = new AlunoDTO();
             dto.setNome(aluno.getNome());
             dto.setEmail(aluno.getEmail());
-            alunosDTOS.add(dto);
+            alunosDTO.add(dto);
         }
-        return ResponseEntity.ok(alunosDTOS);
+        return ResponseEntity.ok(alunosDTO);
     }
 
     @GetMapping(path = "{id}")
-    public ResponseEntity<AlunoModel> buscarAlunoPorID(@PathVariable Long id) {
+    public ResponseEntity<AlunoModel> buscarAlunoPorId(@PathVariable Long id) {
         Optional<AlunoModel> aluno = alunoService.buscarAlunoPorId(id);
 
         return aluno.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());

@@ -53,7 +53,7 @@ public class AlunoControllerTest {
                 .andExpect(jsonPath("$.email").value("aluno1@teste.com"));
     }
 
-  @Test
+    @Test
     @DisplayName("Listar todos os alunos cadastrados")
     public void testListarAlunos() throws Exception {
         AlunoModel alunoModel1 = new AlunoModel();

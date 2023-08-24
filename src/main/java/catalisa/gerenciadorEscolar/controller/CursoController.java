@@ -2,6 +2,7 @@ package catalisa.gerenciadorEscolar.controller;
 
 import catalisa.gerenciadorEscolar.dto.CursoDTO;
 import catalisa.gerenciadorEscolar.model.CursoModel;
+import catalisa.gerenciadorEscolar.model.CursoModel;
 import catalisa.gerenciadorEscolar.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,34 +19,41 @@ public class CursoController {
     CursoService cursoService;
 
     @PostMapping
-    public CursoModel cadastrarCurso(@RequestBody CursoModel curso) {
-        return cursoService.cadastrarCurso(curso);
+    public ResponseEntity<CursoDTO> cadastrarCurso(@RequestBody CursoModel curso) {
+        CursoModel novoCurso = cursoService.cadastrarCurso(curso);
+
+        CursoDTO cursoDTO = new CursoDTO();
+        cursoDTO.setNomeCurso(novoCurso.getNomeCurso());
+        cursoDTO.setCargaHoraria(novoCurso.getCargaHoraria());
+
+        return ResponseEntity.ok(cursoDTO);
     }
 
     @GetMapping
-    public List<CursoDTO> listarCursos(){
+    public ResponseEntity<List<CursoDTO>> listarCursos() {
         List<CursoModel> cursos = cursoService.listarCursos();
         List<CursoDTO> cursosDTO = new ArrayList<>();
 
-        for (CursoModel curso : cursos){
+        for (CursoModel curso : cursos) {
             CursoDTO dto = new CursoDTO();
 
             dto.setNomeCurso(curso.getNomeCurso());
             dto.setCargaHoraria(curso.getCargaHoraria());
             cursosDTO.add(dto);
         }
-        return cursosDTO;
+        return ResponseEntity.ok(cursosDTO);
     }
 
     //busca curso por id
-    @GetMapping(path = "/curso/{id}")
-    public Optional<CursoModel> buscarCursoPorID(@PathVariable Long id) {
-        return cursoService.buscarCursoPorId(id);
-    }
+    @GetMapping(path = "{id}")
+    public ResponseEntity<CursoModel> buscarCursoPorID(@PathVariable Long id) {
+        Optional<CursoModel> curso = cursoService.buscarCursoPorId(id);
 
-    @DeleteMapping(path = "/curso/{id}")
-    public ResponseEntity<Void> deletarCurso(@PathVariable Long id) {
+        return curso.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+    @DeleteMapping(path = "{id}")
+    public ResponseEntity<?> deletarCurso(@PathVariable Long id) {
         cursoService.deletarCurso(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body("Curso excluído com sucesso!");
     }
 }
